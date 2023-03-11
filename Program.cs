@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using Repository_Pattern.Data;
 using Repository_Pattern.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +12,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<IClienteRepository, ClienteRepository>();
 builder.Services.AddTransient<IPedidoRepository, PedidoRepository>();
+
+string ConnectionString = builder.Configuration.GetConnectionString("Root");
+builder.Services.AddDbContext<DataContext>(options => options.UseMySql(ServerVersion.AutoDetect(ConnectionString)));
 
 var app = builder.Build();
 
